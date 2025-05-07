@@ -1,11 +1,10 @@
 package test;
 
 import main.datastructure.HashTableWithAVL;
-import java.util.Random;
 
 public class HashTableTest {
     public static void main(String[] args) {
-        // Basic test
+        //basic test
         testBasicOperations();
     }
     
@@ -14,23 +13,23 @@ public class HashTableTest {
         
         HashTableWithAVL<String, Integer> hashTable = new HashTableWithAVL<>();
         
-        // Insert some key-value pairs
+        //insert some key-value pairs
         hashTable.insert("apple", 1);
         hashTable.insert("banana", 2);
         hashTable.insert("cherry", 3);
         hashTable.insert("date", 4);
         hashTable.insert("elderberry", 5);
         
-        // Search for keys
+        //search for keys
         System.out.println("apple: " + hashTable.search("apple")); // Should be 1
         System.out.println("banana: " + hashTable.search("banana")); // Should be 2
         System.out.println("fig: " + hashTable.search("fig")); // Should be null
         
-        // Delete a key
+        //delete a key
         hashTable.delete("banana");
         System.out.println("After deleting banana: " + hashTable.search("banana")); // Should be null
         
-        // Print statistics
+        //print statistics
         printStatistics(hashTable);
     }
     

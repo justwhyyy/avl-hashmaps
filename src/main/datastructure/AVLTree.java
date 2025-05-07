@@ -7,7 +7,7 @@ import java.util.List;
 public class AVLTree<K extends Comparable<K>, V> {
     private Node root;
     private int size;
-    private int rotationCount; // Enhancement: track rotations
+    private int rotationCount;
     
     private class Node {
         K key;
@@ -18,7 +18,7 @@ public class AVLTree<K extends Comparable<K>, V> {
         Node(K key, V value) {
             this.key = key;
             this.value = value;
-            this.height = 1; // Leaf nodes have height 1
+            this.height = 1; 
             this.left = null;
             this.right = null;
         }
@@ -42,65 +42,60 @@ public class AVLTree<K extends Comparable<K>, V> {
         return rotationCount;
     }
     
-    // Get height of a node (null nodes have height 0)
+    //get height of a node (null nodes have height 0)
     private int height(Node node) {
         if (node == null) return 0;
         return node.height;
     }
     
-    // Update height of a node based on its children
+    //update height of a node based on its children
     private void updateHeight(Node node) {
         if (node == null) return;
         node.height = 1 + Math.max(height(node.left), height(node.right));
     }
     
-    // Get balance factor of a node (difference between left and right subtree heights)
+    //get balance factor of a node (difference between left and right subtree heights)
     private int getBalanceFactor(Node node) {
         if (node == null) return 0;
         return height(node.left) - height(node.right);
     }
     
-    // Right rotation
+    //right rotation
     private Node rightRotate(Node y) {
         Node x = y.left;
         Node T2 = x.right;
         
-        // Perform rotation
         x.right = y;
         y.left = T2;
         
-        // Update heights
         updateHeight(y);
         updateHeight(x);
         
-        rotationCount++; // Count rotation
+        rotationCount++;
         return x;
     }
     
-    // Left rotation
+    //left rotation
     private Node leftRotate(Node x) {
         Node y = x.right;
         Node T2 = y.left;
         
-        // Perform rotation
         y.left = x;
         x.right = T2;
         
-        // Update heights
         updateHeight(x);
         updateHeight(y);
         
-        rotationCount++; // Count rotation
+        rotationCount++;
         return y;
     }
     
-    // Insert a key-value pair
+    //insert a key-value pair
     public void insert(K key, V value) {
         root = insertRec(root, key, value);
     }
     
     private Node insertRec(Node node, K key, V value) {
-        // Standard BST insert
         if (node == null) {
             size++;
             return new Node(key, value);
@@ -112,32 +107,30 @@ public class AVLTree<K extends Comparable<K>, V> {
         } else if (cmp > 0) {
             node.right = insertRec(node.right, key, value);
         } else {
-            // Key already exists, update value
+            //key already exists, update value
             node.value = value;
             return node;
         }
         
-        // Update height of current node
         updateHeight(node);
         
-        // Get balance factor to check if this node became unbalanced
         int balance = getBalanceFactor(node);
         
-        // Left Left Case
+        //LL
         if (balance > 1 && key.compareTo(node.left.key) < 0)
             return rightRotate(node);
         
-        // Right Right Case
+        //RR
         if (balance < -1 && key.compareTo(node.right.key) > 0)
             return leftRotate(node);
         
-        // Left Right Case
+        //LR
         if (balance > 1 && key.compareTo(node.left.key) > 0) {
             node.left = leftRotate(node.left);
             return rightRotate(node);
         }
         
-        // Right Left Case
+        //RL
         if (balance < -1 && key.compareTo(node.right.key) < 0) {
             node.right = rightRotate(node.right);
             return leftRotate(node);
@@ -146,7 +139,7 @@ public class AVLTree<K extends Comparable<K>, V> {
         return node;
     }
     
-    // Search for a key
+    //search for a key
     public V search(K key) {
         Node result = searchRec(root, key);
         return result == null ? null : result.value;
@@ -161,7 +154,7 @@ public class AVLTree<K extends Comparable<K>, V> {
         return searchRec(node.right, key);
     }
     
-    // Find node with minimum key value
+    //find node with minimum key value
     private Node minValueNode(Node node) {
         Node current = node;
         while (current.left != null)
@@ -169,10 +162,10 @@ public class AVLTree<K extends Comparable<K>, V> {
         return current;
     }
     
-    // Delete a key
+    //delete a key
     public void delete(K key) {
         Node node = searchRec(root, key);
-        if (node != null) { // Only decrease size if node exists
+        if (node != null) { 
             size--;
             root = deleteRec(root, key);
         }
@@ -183,55 +176,49 @@ public class AVLTree<K extends Comparable<K>, V> {
         
         int cmp = key.compareTo(root.key);
         
-        // Find the node to be deleted
         if (cmp < 0) {
             root.left = deleteRec(root.left, key);
         } else if (cmp > 0) {
             root.right = deleteRec(root.right, key);
         } else {
-            // Node found
+            //node found
             
-            // Node with only one child or no child
+            //node with only one child or no child
             if (root.left == null)
                 return root.right;
             else if (root.right == null)
                 return root.left;
             
-            // Node with two children, get inorder successor (smallest in right subtree)
+            //node with two children, get inorder successor
             Node temp = minValueNode(root.right);
-            
-            // Copy the inorder successor's data to this node
+        
             root.key = temp.key;
             root.value = temp.value;
-            
-            // Delete the inorder successor
+
             root.right = deleteRec(root.right, temp.key);
         }
-        
-        // If the tree had only one node, return
+    
         if (root == null) return null;
         
-        // Update height
         updateHeight(root);
         
-        // Check balance factor and balance if needed
         int balance = getBalanceFactor(root);
         
-        // Left Left Case
+        //LL
         if (balance > 1 && getBalanceFactor(root.left) >= 0)
             return rightRotate(root);
         
-        // Left Right Case
+        //LR
         if (balance > 1 && getBalanceFactor(root.left) < 0) {
             root.left = leftRotate(root.left);
             return rightRotate(root);
         }
         
-        // Right Right Case
+        //RR
         if (balance < -1 && getBalanceFactor(root.right) <= 0)
             return leftRotate(root);
         
-        // Right Left Case
+        //RL
         if (balance < -1 && getBalanceFactor(root.right) > 0) {
             root.right = rightRotate(root.right);
             return leftRotate(root);
@@ -240,7 +227,6 @@ public class AVLTree<K extends Comparable<K>, V> {
         return root;
     }
     
-    // Get all key-value pairs (for rehashing)
     public List<KeyValuePair<K, V>> getAllKeyValuePairs() {
         List<KeyValuePair<K, V>> pairs = new ArrayList<>();
         collectKeyValuePairs(root, pairs);

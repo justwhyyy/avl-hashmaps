@@ -12,20 +12,20 @@ public class RandomInputTest {
         System.out.println("===== Testing with Random Input =====");
         
         HashTableWithAVL<Integer, String> hashTable = new HashTableWithAVL<>();
-        Random random = new Random(42); // Fixed seed for reproducibility
+        Random random = new Random(42); //fixed seed for reproducibility
         
-        // Insert 10,000 random key-value pairs
+        //insert 10,000 random key-value pairs
         for (int i = 0; i < 10000; i++) {
             int key = random.nextInt(1000000);
             hashTable.insert(key, "Value-" + key);
             
-            // Every 1000 insertions, print statistics
+            //every 1000 insertions, print statistics
             if ((i + 1) % 1000 == 0) {
                 printStatistics(hashTable, i + 1);
             }
         }
         
-        // Search for 1000 random keys and measure hit rate
+        //search for 1000 random keys and measure hit rate
         int hits = 0;
         for (int i = 0; i < 1000; i++) {
             int key = random.nextInt(1000000);

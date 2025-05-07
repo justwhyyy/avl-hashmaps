@@ -6,12 +6,12 @@ import java.util.List;
 
 public class HashTableWithAVL<K extends Comparable<K>, V> {
     private AVLTree<K, V>[] buckets;
-    private int size; // Total number of entries
-    private int capacity; // Number of buckets
+    private int size; 
+    private int capacity; 
     private double loadFactorThreshold;
     private HashFunction<K> hashFunction;
     
-    // Default hash function
+    //default hash function
     public static class DefaultHashFunction<K> implements HashFunction<K> {
         @Override
         public int hash(K key) {
@@ -19,12 +19,10 @@ public class HashTableWithAVL<K extends Comparable<K>, V> {
         }
     }
     
-    // Constructor with default parameters
     public HashTableWithAVL() {
         this(16, 0.75, new DefaultHashFunction<>());
     }
-    
-    // Constructor with custom parameters
+
     @SuppressWarnings("unchecked")
     public HashTableWithAVL(int initialCapacity, double loadFactorThreshold, HashFunction<K> hashFunction) {
         this.capacity = initialCapacity;
@@ -32,79 +30,71 @@ public class HashTableWithAVL<K extends Comparable<K>, V> {
         this.hashFunction = hashFunction;
         this.size = 0;
         
-        // Initialize buckets (each bucket is an AVL tree)
+        //init buckets where each bucket is an AVL tree
         buckets = new AVLTree[capacity];
         for (int i = 0; i < capacity; i++) {
             buckets[i] = new AVLTree<>();
         }
     }
     
-    // Get the bucket index for a key
+    //get the bucket index for a key
     private int getBucketIndex(K key) {
         int hash = hashFunction.hash(key);
         return Math.abs(hash) % capacity;
     }
     
-    // Insert a key-value pair
+    //insert a key-value pair
     public void insert(K key, V value) {
         int bucketIndex = getBucketIndex(key);
         int oldSize = buckets[bucketIndex].getSize();
         buckets[bucketIndex].insert(key, value);
         
-        // If size increased, a new entry was added
         if (buckets[bucketIndex].getSize() > oldSize) {
             size++;
-            
-            // Check if resizing is needed
             if ((double) size / capacity > loadFactorThreshold) {
                 resize();
             }
         }
     }
     
-    // Search for a key
+    //search for a key
     public V search(K key) {
         int bucketIndex = getBucketIndex(key);
         return buckets[bucketIndex].search(key);
     }
     
-    // Delete a key
+    //delete a key
     public void delete(K key) {
         int bucketIndex = getBucketIndex(key);
         int oldSize = buckets[bucketIndex].getSize();
         buckets[bucketIndex].delete(key);
         
-        // If size decreased, an entry was removed
         if (buckets[bucketIndex].getSize() < oldSize) {
             size--;
         }
     }
     
-    // Resize the hash table
+    //resize the hash table
     @SuppressWarnings("unchecked")
     private void resize() {
         int oldCapacity = capacity;
         capacity *= 2;
-        
-        // Save old buckets
+
         AVLTree<K, V>[] oldBuckets = buckets;
         
-        // Create new buckets
         buckets = new AVLTree[capacity];
         for (int i = 0; i < capacity; i++) {
             buckets[i] = new AVLTree<>();
         }
-        
-        // Reset size since we'll reinsert all entries
+
         size = 0;
         
-        // Reinsert all entries from old buckets
         for (int i = 0; i < oldCapacity; i++) {
             rehashBucket(oldBuckets[i]);
         }
     }
     
-    // Helper to rehash a bucket during resize
+    //helper to rehash a bucket during resize
     private void rehashBucket(AVLTree<K, V> tree) {
         List<KeyValuePair<K, V>> pairs = tree.getAllKeyValuePairs();
         for (KeyValuePair<K, V> pair : pairs) {
@@ -112,22 +102,22 @@ public class HashTableWithAVL<K extends Comparable<K>, V> {
         }
     }
     
-    // Get total number of entries
+    //get total number of entries
     public int getSize() {
         return size;
     }
     
-    // Get number of buckets
+    //get number of buckets
     public int getCapacity() {
         return capacity;
     }
     
-    // Get current load factor
+    //get current load factor
     public double getCurrentLoadFactor() {
         return (double) size / capacity;
     }
     
-    // Get max height of all AVL trees
+    //get max height of all AVL trees
     public int getMaxHeight() {
         int maxHeight = 0;
         for (AVLTree<K, V> bucket : buckets) {
@@ -136,7 +126,7 @@ public class HashTableWithAVL<K extends Comparable<K>, V> {
         return maxHeight;
     }
     
-    // Get average height of all AVL trees
+    //get average height of all AVL trees
     public double getAverageHeight() {
         double totalHeight = 0;
         for (AVLTree<K, V> bucket : buckets) {
@@ -145,7 +135,7 @@ public class HashTableWithAVL<K extends Comparable<K>, V> {
         return totalHeight / capacity;
     }
     
-    // Get total rotation count from all AVL trees
+    //get total rotation count from all AVL trees
     public int getTotalRotationCount() {
         int totalRotations = 0;
         for (AVLTree<K, V> bucket : buckets) {
@@ -154,7 +144,7 @@ public class HashTableWithAVL<K extends Comparable<K>, V> {
         return totalRotations;
     }
     
-    // Get heights of all buckets (for visualization)
+    //get heights of all buckets (for visualization)
     public int[] getBucketHeights() {
         int[] heights = new int[capacity];
         for (int i = 0; i < capacity; i++) {

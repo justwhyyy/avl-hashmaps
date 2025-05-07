@@ -13,10 +13,10 @@ public class ComparisonTest {
     private static void compareHashFunctions() {
         System.out.println("===== Comparing Hash Functions =====");
         
-        // Default hash function (Object.hashCode())
+        //default hash function 
         HashTableWithAVL<Integer, String> defaultHash = new HashTableWithAVL<>();
         
-        // Multiplication hash function
+        //multiplication hash function
         HashFunction<Integer> multiplyHash = key -> {
             int hash = key * 265443576 % 2147483647; // Knuth's multiplicative method
             return hash;
@@ -24,7 +24,7 @@ public class ComparisonTest {
         HashTableWithAVL<Integer, String> multiplyHashTable = 
             new HashTableWithAVL<>(16, 0.75, multiplyHash);
         
-        // FNV-1a hash function
+        //FNV-1a hash function
         HashFunction<Integer> fnvHash = key -> {
             int hash = 216613626; // FNV offset basis
             String keyStr = key.toString();
@@ -37,7 +37,7 @@ public class ComparisonTest {
         HashTableWithAVL<Integer, String> fnvHashTable = 
             new HashTableWithAVL<>(16, 0.75, fnvHash);
         
-        // Compare by inserting 10,000 sequential integers
+        //compare by inserting 10,000 sequential integers
         Random random = new Random(42);
         for (int i = 0; i < 10000; i++) {
             int key = random.nextInt(1000000);
@@ -60,7 +60,7 @@ public class ComparisonTest {
     private static void compareLoadFactors() {
         System.out.println("\n===== Comparing Load Factors =====");
         
-        // Hash tables with different load factors
+        //hash tables with different load factors
         HashTableWithAVL<Integer, String> lowLoadFactor = 
             new HashTableWithAVL<Integer, String>(16, 0.5, new HashTableWithAVL.DefaultHashFunction<Integer>());
             
@@ -70,7 +70,7 @@ public class ComparisonTest {
         HashTableWithAVL<Integer, String> highLoadFactor = 
             new HashTableWithAVL<Integer, String>(16, 0.9, new HashTableWithAVL.DefaultHashFunction<Integer>());
         
-        // Insert 10,000 random key-value pairs
+        //insert 10,000 random key-value pairs
         Random random = new Random(42);
         for (int i = 0; i < 10000; i++) {
             int key = random.nextInt(1000000);

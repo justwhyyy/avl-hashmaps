@@ -8,11 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HashMapComparisonTest {
-    private static final int NUM_OPERATIONS = 100000; // Number of operations for each test
-    private static final int NUM_RUNS = 5; // Number of runs to average results
-    
+    private static final int NUM_OPERATIONS = 100000; 
+    private static final int NUM_RUNS = 5; 
     public static void main(String[] args) {
-        // Run all tests
+        //running all tests
         randomInsertionTest();
         sequentialInsertionTest();
         searchTest();
@@ -24,7 +23,7 @@ public class HashMapComparisonTest {
     private static void randomInsertionTest() {
         System.out.println("\n===== Random Insertion Performance Test =====");
         
-        // Run multiple times and take average
+        //running multiple times and take average
         long totalAVLTime = 0;
         long totalHashMapTime = 0;
         
@@ -34,7 +33,7 @@ public class HashMapComparisonTest {
             
             Random random = new Random(run); // Same seed for both maps on each run
             
-            // Measure AVL HashMap insertion time
+            //measure AVL HashMap insertion time
             long startTime = System.nanoTime();
             for (int i = 0; i < NUM_OPERATIONS; i++) {
                 int key = random.nextInt(NUM_OPERATIONS * 10);
@@ -44,7 +43,7 @@ public class HashMapComparisonTest {
             long avlTime = endTime - startTime;
             totalAVLTime += avlTime;
             
-            // Measure standard HashMap insertion time
+            //measure standard HashMap insertion time
             startTime = System.nanoTime();
             for (int i = 0; i < NUM_OPERATIONS; i++) {
                 int key = random.nextInt(NUM_OPERATIONS * 10);
@@ -58,7 +57,7 @@ public class HashMapComparisonTest {
                 run + 1, avlTime / 1_000_000.0, hashMapTime / 1_000_000.0);
         }
         
-        // Print average results
+        //print average results
         System.out.printf("Average - AVL HashMap: %.3f ms, Standard HashMap: %.3f ms%n", 
             totalAVLTime / (NUM_RUNS * 1_000_000.0), totalHashMapTime / (NUM_RUNS * 1_000_000.0));
         System.out.printf("Relative Performance: AVL is %.2f times slower than standard HashMap%n",
@@ -75,7 +74,7 @@ public class HashMapComparisonTest {
             HashTableWithAVL<Integer, String> avlHashTable = new HashTableWithAVL<>();
             HashMap<Integer, String> standardHashMap = new HashMap<>();
             
-            // Measure AVL HashMap insertion time
+            //measure AVL HashMap insertion time
             long startTime = System.nanoTime();
             for (int i = 0; i < NUM_OPERATIONS; i++) {
                 avlHashTable.insert(i, "Value-" + i);
@@ -84,7 +83,7 @@ public class HashMapComparisonTest {
             long avlTime = endTime - startTime;
             totalAVLTime += avlTime;
             
-            // Measure standard HashMap insertion time
+            //measure standard HashMap insertion time
             startTime = System.nanoTime();
             for (int i = 0; i < NUM_OPERATIONS; i++) {
                 standardHashMap.put(i, "Value-" + i);
@@ -97,7 +96,7 @@ public class HashMapComparisonTest {
                 run + 1, avlTime / 1_000_000.0, hashMapTime / 1_000_000.0);
         }
         
-        // Print average results
+        //print average results
         System.out.printf("Average - AVL HashMap: %.3f ms, Standard HashMap: %.3f ms%n", 
             totalAVLTime / (NUM_RUNS * 1_000_000.0), totalHashMapTime / (NUM_RUNS * 1_000_000.0));
         System.out.printf("Relative Performance: AVL is %.2f times slower than standard HashMap%n",
@@ -114,7 +113,7 @@ public class HashMapComparisonTest {
             HashTableWithAVL<Integer, String> avlHashTable = new HashTableWithAVL<>();
             HashMap<Integer, String> standardHashMap = new HashMap<>();
             
-            // Prepare data - insert the same data in both maps
+            //prepare data - insert the same data in both maps
             Random random = new Random(run);
             List<Integer> keys = new ArrayList<>();
             
@@ -123,18 +122,18 @@ public class HashMapComparisonTest {
                 avlHashTable.insert(key, "Value-" + key);
                 standardHashMap.put(key, "Value-" + key);
                 
-                // Save keys for search test (50% chance)
+                //save keys for search test (50% chance)
                 if (random.nextBoolean()) {
                     keys.add(key);
                 }
             }
             
-            // Add some non-existent keys
+            //adding some non-existent keys
             for (int i = 0; i < NUM_OPERATIONS / 10; i++) {
                 keys.add(NUM_OPERATIONS * 10 + i); // Keys that don't exist
             }
             
-            // Measure AVL HashMap search time
+            //measure AVL HashMap search time
             long startTime = System.nanoTime();
             for (Integer key : keys) {
                 avlHashTable.search(key);
@@ -143,7 +142,7 @@ public class HashMapComparisonTest {
             long avlTime = endTime - startTime;
             totalAVLTime += avlTime;
             
-            // Measure standard HashMap search time
+            //measure standard HashMap search time
             startTime = System.nanoTime();
             for (Integer key : keys) {
                 standardHashMap.get(key);
@@ -156,7 +155,7 @@ public class HashMapComparisonTest {
                 run + 1, avlTime / 1_000_000.0, hashMapTime / 1_000_000.0);
         }
         
-        // Print average results
+        //printing avg results
         System.out.printf("Average - AVL HashMap: %.3f ms, Standard HashMap: %.3f ms%n", 
             totalAVLTime / (NUM_RUNS * 1_000_000.0), totalHashMapTime / (NUM_RUNS * 1_000_000.0));
         System.out.printf("Relative Performance: AVL is %.2f times slower than standard HashMap%n",
@@ -173,7 +172,7 @@ public class HashMapComparisonTest {
             HashTableWithAVL<Integer, String> avlHashTable = new HashTableWithAVL<>();
             HashMap<Integer, String> standardHashMap = new HashMap<>();
             
-            // Prepare data - insert the same data in both maps
+            //prepare data 
             Random random = new Random(run);
             List<Integer> keys = new ArrayList<>();
             
@@ -182,13 +181,13 @@ public class HashMapComparisonTest {
                 avlHashTable.insert(key, "Value-" + key);
                 standardHashMap.put(key, "Value-" + key);
                 
-                // Save keys for deletion test (33% chance)
+                //save keys for deletion test
                 if (random.nextInt(3) == 0) {
                     keys.add(key);
                 }
             }
             
-            // Measure AVL HashMap deletion time
+            //measure AVL HashMap deletion time
             long startTime = System.nanoTime();
             for (Integer key : keys) {
                 avlHashTable.delete(key);
@@ -197,7 +196,7 @@ public class HashMapComparisonTest {
             long avlTime = endTime - startTime;
             totalAVLTime += avlTime;
             
-            // Measure standard HashMap deletion time
+            //measure standard HashMap deletion time
             startTime = System.nanoTime();
             for (Integer key : keys) {
                 standardHashMap.remove(key);
@@ -210,7 +209,7 @@ public class HashMapComparisonTest {
                 run + 1, avlTime / 1_000_000.0, hashMapTime / 1_000_000.0);
         }
         
-        // Print average results
+        //print average results
         System.out.printf("Average - AVL HashMap: %.3f ms, Standard HashMap: %.3f ms%n", 
             totalAVLTime / (NUM_RUNS * 1_000_000.0), totalHashMapTime / (NUM_RUNS * 1_000_000.0));
         System.out.printf("Relative Performance: AVL is %.2f times slower than standard HashMap%n",
@@ -220,7 +219,7 @@ public class HashMapComparisonTest {
     private static void collisionTest() {
         System.out.println("\n===== Collision Handling Test =====");
         
-        // Create a bad hash function that always returns the same value
+        //creating a bad hash function that always returns the same value
         class BadHashFunction implements HashFunction<Integer> {
             @Override
             public int hash(Integer key) {
@@ -228,7 +227,7 @@ public class HashMapComparisonTest {
             }
         }
         
-        // Create class for bad hash keys in standard HashMap
+        //create class for bad hash keys in standard HashMap
         class BadHashKey {
             private final int value;
             
@@ -238,7 +237,7 @@ public class HashMapComparisonTest {
             
             @Override
             public int hashCode() {
-                return 42; // Always returns the same hash
+                return 42; 
             }
             
             @Override
@@ -254,17 +253,17 @@ public class HashMapComparisonTest {
         long totalHashMapTime = 0;
         
         for (int run = 0; run < NUM_RUNS; run++) {
-            // Reset tables
+            //reset tables
             HashTableWithAVL<Integer, String> avlHashTable = 
                 new HashTableWithAVL<Integer, String>(16, 0.75, new BadHashFunction());
             
-            // Use BadHashKey for standard HashMap
+            //use BadHashKey for standard HashMap
             HashMap<BadHashKey, String> standardHashMap = new HashMap<>();
             
-            // Number of operations for collision test (reduced for performance)
+            //num of operations for collision test (reduced for performance)
             int collisionOps = NUM_OPERATIONS / 10;
             
-            // Measure AVL HashMap with collisions
+            //measure AVL HashMap with collisions
             long startTime = System.nanoTime();
             for (int i = 0; i < collisionOps; i++) {
                 avlHashTable.insert(i, "Value-" + i);
@@ -273,7 +272,7 @@ public class HashMapComparisonTest {
             long avlTime = endTime - startTime;
             totalAVLTime += avlTime;
             
-            // Measure standard HashMap with collisions
+            //measure standard HashMap with collisions
             startTime = System.nanoTime();
             for (int i = 0; i < collisionOps; i++) {
                 standardHashMap.put(new BadHashKey(i), "Value-" + i);
@@ -286,7 +285,6 @@ public class HashMapComparisonTest {
                 run + 1, avlTime / 1_000_000.0, hashMapTime / 1_000_000.0);
         }
         
-        // Print average results
         System.out.printf("Average - AVL HashMap: %.3f ms, Standard HashMap: %.3f ms%n", 
             totalAVLTime / (NUM_RUNS * 1_000_000.0), totalHashMapTime / (NUM_RUNS * 1_000_000.0));
         
@@ -298,23 +296,22 @@ public class HashMapComparisonTest {
                 (double) totalAVLTime / totalHashMapTime);
         }
         
-        // Also measure search performance under collisions
         System.out.println("\n===== Search Under Collisions Test =====");
         
         totalAVLTime = 0;
         totalHashMapTime = 0;
         
         for (int run = 0; run < NUM_RUNS; run++) {
-            // Reset and prepare tables with colliding data
+            //reset and prepare tables with colliding data
             HashTableWithAVL<Integer, String> avlHashTable = 
                 new HashTableWithAVL<Integer, String>(16, 0.75, new BadHashFunction());
             
-            // Use BadHashKey for standard HashMap
+            //use BadHashKey for standard HashMap
             HashMap<BadHashKey, String> standardHashMap = new HashMap<>();
             
             int collisionOps = NUM_OPERATIONS / 10;
             
-            // Insert data
+            //insert data
             for (int i = 0; i < collisionOps; i++) {
                 avlHashTable.insert(i, "Value-" + i);
             }
@@ -326,7 +323,7 @@ public class HashMapComparisonTest {
                 badKeys.add(key);
             }
             
-            // Measure AVL HashMap search time with collisions
+            //measure AVL HashMap search time with collisions
             long startTime = System.nanoTime();
             for (int i = 0; i < collisionOps; i++) {
                 avlHashTable.search(i);
@@ -335,7 +332,7 @@ public class HashMapComparisonTest {
             long avlTime = endTime - startTime;
             totalAVLTime += avlTime;
             
-            // Measure standard HashMap search time with collisions
+            //measure standard HashMap search time with collisions
             startTime = System.nanoTime();
             for (BadHashKey key : badKeys) {
                 standardHashMap.get(key);
@@ -348,7 +345,6 @@ public class HashMapComparisonTest {
                 run + 1, avlTime / 1_000_000.0, hashMapTime / 1_000_000.0);
         }
         
-        // Print average results
         System.out.printf("Average - AVL HashMap search: %.3f ms, Standard HashMap search: %.3f ms%n", 
             totalAVLTime / (NUM_RUNS * 1_000_000.0), totalHashMapTime / (NUM_RUNS * 1_000_000.0));
         
@@ -364,46 +360,45 @@ public class HashMapComparisonTest {
     private static void memoryUsageTest() {
         System.out.println("\n===== Memory Usage Test =====");
         
-        // Force garbage collection to get a cleaner measurement
+        //force garbage collection to get a cleaner measurement
         System.gc();
         
-        // Measure initial memory usage
+        //measure initial memory usage
         long initialMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         
-        // Create and fill AVL HashMap
+        //create and fill AVL HashMap
         HashTableWithAVL<Integer, String> avlHashTable = new HashTableWithAVL<>();
         for (int i = 0; i < NUM_OPERATIONS; i++) {
             avlHashTable.insert(i, "Value-" + i);
         }
         
-        // Force garbage collection again
+        //force garbage collection again
         System.gc();
         
-        // Measure memory after AVL HashMap creation
+        //measure memory after AVL HashMap creation
         long afterAVLMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         long avlMemoryUsage = afterAVLMemory - initialMemory;
         
-        // Clear AVL HashMap to free memory
+        //clear AVL HashMap to free memory
         avlHashTable = null;
         System.gc();
         
-        // Reset initial memory measurement
+        //reset initial memory measurement
         initialMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         
-        // Create and fill standard HashMap
+        //create and fill standard HashMap
         HashMap<Integer, String> standardHashMap = new HashMap<>();
         for (int i = 0; i < NUM_OPERATIONS; i++) {
             standardHashMap.put(i, "Value-" + i);
         }
         
-        // Force garbage collection again
+        //force garbage collection again
         System.gc();
         
-        // Measure memory after standard HashMap creation
+        //measure memory after standard HashMap creation
         long afterStandardMemory = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
         long standardMemoryUsage = afterStandardMemory - initialMemory;
         
-        // Print results
         System.out.printf("AVL HashMap memory usage: %.2f MB%n", avlMemoryUsage / (1024.0 * 1024.0));
         System.out.printf("Standard HashMap memory usage: %.2f MB%n", standardMemoryUsage / (1024.0 * 1024.0));
         System.out.printf("Memory Ratio: AVL HashMap uses %.2f times the memory of standard HashMap%n",
